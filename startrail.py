@@ -217,7 +217,7 @@ register(
 		(PF_DIRNAME, "dark_frames","Dark Frames",""),
 		(PF_TOGGLE, "save_intermediate","Save intermediate frames",0),
 		(PF_DIRNAME, "save_directory","Intermediate save directory",""),
-		(PF_TOGGLE, "live_display","Live display update (much slower)",0),
+		(PF_TOGGLE, "live_display","Live display update", 1),
 		(PF_TOGGLE, "merge_layers","Merge all images to a single layer",1),
 		(PF_TOGGLE, "subtract_skyglow","Automatically remove skyglow (much slower)",0)
 	],
