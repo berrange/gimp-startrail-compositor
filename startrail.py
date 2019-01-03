@@ -252,7 +252,7 @@ register(
 		(PF_DIRNAME, "dark_frames","Dark Frames", xdg_pictures_dir()),
 		(PF_TOGGLE, "save_intermediate","Save intermediate frames",0),
 		(PF_DIRNAME, "save_directory","Intermediate save directory", xdg_pictures_dir()),
-		(PF_TOGGLE, "live_display","Live display update (much slower)",0),
+		(PF_TOGGLE, "live_display","Live display update", 1),
 		(PF_TOGGLE, "merge_layers","Merge all images to a single layer",1),
 		(PF_OPTION, "subtract_skyglow","Subtract skyglow (much slower)",0, ["None", "Light", "Moderate", "Heavy", "Full"]),
 		(PF_OPTION, "fade", "Fade trails", 0, ["None", "In", "Out"]),
