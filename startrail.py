@@ -31,6 +31,25 @@ gettext.install( "gimp20-template" , locale_directory, unicode=True )
 
 allowed_import_types = ["jpg","jpeg","tiff","tif","bmp","png"]
 
+def xdg_config_dir():
+	return (os.environ.get('XDG_CONFIG_HOME') or
+		os.path.expandvars(os.path.join('$HOME', '.config')))
+
+def xdg_user_dir(cfgpath, name):
+	with open(cfgpath) as fh:
+		for line in fh.readlines():
+			if line.startswith(name):
+				return os.path.expandvars(line[len(name)+2:-2])
+
+def xdg_pictures_dir():
+	cfgdir = xdg_config_dir()
+	userdirs = os.path.join(cfgdir, "user-dirs.dirs")
+	if os.path.exists(userdirs):
+		picdir = xdg_user_dir(userdirs, "XDG_PICTURES_DIR")
+		if os.path.exists(picdir):
+			return picdir
+	return os.getcwd()
+
 def file_is_image(file_name):
 	is_image = 0
 	ext = os.path.splitext(file_name)[1] # get the extension
@@ -217,6 +236,7 @@ def startrail(frames, use_dark_frames, dark_frames, save_intermediate, save_dire
 	if dark_image != None:
 		gimp.delete(dark_image) # we don't need this any more so get rid of it so not to leak.
 
+
 register(
 	"startrail",
 	"",
@@ -227,11 +247,11 @@ register(
 	_("Startrail"),
 	"",
 	[
-		(PF_DIRNAME, "frames","Light Frames",""),
+		(PF_DIRNAME, "frames","Light Frames", xdg_pictures_dir()),
 		(PF_TOGGLE, "use_dark_frames","Use dark frame",0),
-		(PF_DIRNAME, "dark_frames","Dark Frames",""),
+		(PF_DIRNAME, "dark_frames","Dark Frames", xdg_pictures_dir()),
 		(PF_TOGGLE, "save_intermediate","Save intermediate frames",0),
-		(PF_DIRNAME, "save_directory","Intermediate save directory",""),
+		(PF_DIRNAME, "save_directory","Intermediate save directory", xdg_pictures_dir()),
 		(PF_TOGGLE, "live_display","Live display update (much slower)",0),
 		(PF_TOGGLE, "merge_layers","Merge all images to a single layer",1),
 		(PF_OPTION, "subtract_skyglow","Subtract skyglow (much slower)",0, ["None", "Light", "Moderate", "Heavy", "Full"]),
